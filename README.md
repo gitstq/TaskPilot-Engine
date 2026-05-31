@@ -53,10 +53,10 @@ TaskPilot-CLI 是一款面向开发者的轻量级终端工具，让你通过 YA
 
 ```bash
 # 从 GitHub 直接安装
-pip install git+https://github.com/gitstq/TaskPilot-CLI.git
+pip install git+https://github.com/gitstq/TaskPilot-Engine.git
 
 # 或者克隆后本地安装
-git clone https://github.com/gitstq/TaskPilot-CLI.git
+git clone https://github.com/gitstq/TaskPilot-Engine.git
 cd TaskPilot-CLI
 pip install -e .
 ```
@@ -185,10 +185,10 @@ TaskPilot-CLI 是一款面向開發者的輕量級終端工具，讓你透過 YA
 
 ```bash
 # 從 GitHub 直接安裝
-pip install git+https://github.com/gitstq/TaskPilot-CLI.git
+pip install git+https://github.com/gitstq/TaskPilot-Engine.git
 
 # 或者複製後本地安裝
-git clone https://github.com/gitstq/TaskPilot-CLI.git
+git clone https://github.com/gitstq/TaskPilot-Engine.git
 cd TaskPilot-CLI
 pip install -e .
 ```
@@ -317,10 +317,10 @@ TaskPilot-CLI is a lightweight terminal tool designed for developers to define c
 
 ```bash
 # Install directly from GitHub
-pip install git+https://github.com/gitstq/TaskPilot-CLI.git
+pip install git+https://github.com/gitstq/TaskPilot-Engine.git
 
 # Or clone and install locally
-git clone https://github.com/gitstq/TaskPilot-CLI.git
+git clone https://github.com/gitstq/TaskPilot-Engine.git
 cd TaskPilot-CLI
 pip install -e .
 ```
