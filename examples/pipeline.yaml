@@ -1,0 +1,79 @@
+# TaskPilot-CLI Pipeline Example
+# 轻量级AI任务编排流水线示例
+
+name: example-pipeline
+description: A demo pipeline showcasing TaskPilot features
+version: "1.0.0"
+max_parallel: 3
+
+# LLM Configuration
+llm:
+  provider: openai
+  model: gpt-4o-mini
+  temperature: 0.7
+  max_tokens: 4096
+
+# Environment Variables
+env:
+  PROJECT_DIR: "./workspace"
+  OUTPUT_FORMAT: "json"
+
+# Pipeline Variables
+variables:
+  target_url: "https://httpbin.org/get"
+  max_retries: 3
+
+# Pipeline Steps
+steps:
+  # Step 1: Fetch data (no dependencies, runs first)
+  - name: fetch-data
+    type: http_request
+    description: Fetch data from target URL
+    config:
+      url: "{{target_url}}"
+      method: GET
+      headers:
+        Accept: "application/json"
+    retry_count: 2
+    retry_delay: 1.0
+    timeout: 30.0
+
+  # Step 2: Process with LLM (depends on fetch-data)
+  - name: analyze-data
+    type: llm_call
+    description: Analyze fetched data with AI
+    depends_on:
+      - fetch-data
+    config:
+      system: "You are a data analysis assistant. Provide concise insights."
+      prompt: "Analyze the following data and provide key insights:\n{{fetch-data}}"
+
+  # Step 3: Run shell command (parallel with analyze-data, depends on fetch-data)
+  - name: prepare-output
+    type: shell_command
+    description: Prepare output directory
+    depends_on:
+      - fetch-data
+    config:
+      command: "echo 'Output dir ready'"
+
+  # Step 4: Transform results (depends on analyze-data)
+  - name: format-results
+    type: transform
+    description: Format analysis results
+    depends_on:
+      - analyze-data
+    config:
+      transform: template
+      template: "Analysis complete. Status: {{analyze-data.status}}"
+
+  # Step 5: Final summary (depends on all previous steps)
+  - name: final-report
+    type: transform
+    description: Generate final report
+    depends_on:
+      - analyze-data
+      - prepare-output
+      - format-results
+    config:
+      transform: identity

@@ -1,0 +1,51 @@
+# Shell Automation Pipeline Example
+# Shell自动化流水线示例
+
+name: dev-automation
+description: Automated development workflow pipeline
+version: "1.0.0"
+max_parallel: 2
+
+variables:
+  project_dir: "."
+
+steps:
+  - name: check-env
+    type: shell_command
+    description: Check development environment
+    config:
+      command: "python3 --version && echo 'Python OK'"
+
+  - name: lint-check
+    type: shell_command
+    description: Run code linting
+    depends_on:
+      - check-env
+    config:
+      command: "echo 'Lint check passed (demo mode)'"
+    retry_count: 1
+
+  - name: unit-tests
+    type: shell_command
+    description: Run unit tests
+    depends_on:
+      - check-env
+    config:
+      command: "echo 'All tests passed (demo mode)'"
+    retry_count: 2
+    retry_delay: 2.0
+
+  - name: build-report
+    type: transform
+    description: Generate build report
+    depends_on:
+      - lint-check
+      - unit-tests
+    config:
+      transform: template
+      template: |
+        Build Report
+        ============
+        Lint: {{lint-check.status}}
+        Tests: {{unit-tests.status}}
+        All checks passed!
